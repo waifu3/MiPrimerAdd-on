@@ -1,0 +1,42 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+	<linearGradient id="panel" x1="0" y1="0" x2="1200" y2="760" gradientUnits="userSpaceOnUse">
+	  <stop stop-color="#F8FAFC"/>
+	  <stop offset="1" stop-color="#E2E8F0"/>
+	</linearGradient>
+	<linearGradient id="header" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+	  <stop stop-color="#0F172A"/>
+	  <stop offset="1" stop-color="#1E293B"/>
+	</linearGradient>
+  </defs>
+  <rect width="1200" height="760" rx="26" fill="#E5E7EB"/>
+  <rect x="120" y="70" width="960" height="620" rx="22" fill="url(#panel)" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="120" y="70" width="960" height="92" rx="22" fill="url(#header)"/>
+  <text x="170" y="128" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">Tipos de cambio</text>
+  <rect x="170" y="210" width="140" height="28" fill="#F8FAFC"/>
+  <text x="170" y="232" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600">Fecha:</text>
+  <rect x="330" y="200" width="260" height="42" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="330" y="200" width="160" height="42" rx="8" fill="#E0F2FE"/>
+
+  <rect x="170" y="290" width="160" height="28" fill="#F8FAFC"/>
+  <text x="170" y="312" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">Dólar (US$):</text>
+  <rect x="330" y="280" width="350" height="42" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+
+  <rect x="170" y="360" width="160" height="28" fill="#F8FAFC"/>
+  <text x="170" y="382" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">Euro (EUR):</text>
+  <rect x="330" y="350" width="350" height="42" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+
+  <rect x="170" y="430" width="160" height="28" fill="#F8FAFC"/>
+  <text x="170" y="452" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">UF:</text>
+  <rect x="330" y="420" width="350" height="42" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+
+  <rect x="170" y="520" width="212" height="48" rx="10" fill="#2563EB"/>
+  <text x="215" y="552" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Consultar</text>
+
+  <text x="770" y="220" fill="#334155" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Vista previa del formulario</text>
+  <rect x="760" y="250" width="220" height="220" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <circle cx="830" cy="320" r="52" fill="#DBEAFE"/>
+  <path d="M816 320L828 332L848 308" stroke="#2563EB" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="780" y="420" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600">Consulta activa</text>
+  <text x="778" y="454" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="16">Datos en tiempo real</text>
+</svg>

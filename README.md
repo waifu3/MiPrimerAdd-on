@@ -1,6 +1,10 @@
 # Mi Primer Addon
 
 <div align="center">
+  <img src="assets/banner.svg" alt="Mi Primer Addon banner" width="100%" />
+</div>
+
+<div align="center">
 
 ![Status](https://img.shields.io/badge/status-active-success)
 ![Build](https://img.shields.io/badge/build-ongoing-orange)
@@ -74,6 +78,9 @@ MiprimerAddon/
 ├── .gitignore
 ├── LICENSE
 ├── README.md
+├── assets/
+│   ├── banner.svg
+│   └── form-preview.svg
 ├── MiprimerAddon.slnx
 ├── MiprimerAddon/
 │   ├── Addon.cs
@@ -134,11 +141,9 @@ Este proyecto se encuentra en desarrollo activo y cuenta con una base funcional 
 
 ## Capturas
 
-> Aquí puedes añadir una captura del menú o del formulario para mejorar la presentación del repositorio.
-
-```text
-[Imagen del formulario SAP Business One]
-```
+<div align="center">
+  <img src="assets/form-preview.svg" alt="Vista previa del formulario" width="80%" />
+</div>
 
 ## Licencia
 
