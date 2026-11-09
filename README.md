@@ -4,39 +4,40 @@
 
 ![.NET Framework 4.8](https://img.shields.io/badge/.NET-Framework%204.8-512BD4?logo=dotnet)
 ![SAP Business One](https://img.shields.io/badge/SAP-Business%20One-0D6EFD)
+![C#](https://img.shields.io/badge/C%23-Programming-239120?logo=csharp&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
 </div>
 
-Add-on para SAP Business One desarrollado en .NET Framework 4.8, pensado para integrar un menú personalizado y una pequeña pantalla de consulta de tipos de cambio.
+Add-on personalizado para SAP Business One, construido con C# y .NET Framework 4.8, orientado a la integración con la UI API de SAP y a la consulta de tipos de cambio.
 
-## Descripción
+## ✨ Vista general
 
-Este proyecto crea un menú dentro de SAP Business One y permite abrir un formulario desde el menú principal para consultar valores de cambio de:
+Este proyecto crea un menú dentro de SAP Business One y permite abrir un formulario para consultar valores de cambio de:
 
 - Dólar (USD)
 - Euro (EUR)
-- UF
+- UF (Unidad de Fomento)
 
-La interfaz se integra con la UI API de SAP Business One y permite seleccionar una fecha y visualizar los valores asociados.
+La lógica está diseñada para ser extensible y servirá como base para futuras funcionalidades del add-on.
 
-## Características
+## 🚀 Características
 
-- Menú personalizado dentro de SAP Business One
-- Formularios integrados con UI API
-- Validación de fecha
-- Consulta de tipos de cambio por moneda
-- Diseño sencillo y extensible para futuras mejoras
+- Menú personalizado dentro del entorno de SAP Business One
+- Integración con `SAPbouiCOM` y `SAPbobsCOM`
+- Formulario de consulta con fecha y resultados
+- Validación de entradas y manejo de errores básicos
+- Estructura lista para crecer con nuevas pantallas o funcionalidades
 - Compatible con .NET Framework 4.8
 
-## Requisitos
+## 🧩 Requisitos
 
 - Windows
 - .NET Framework 4.8
 - Visual Studio 2022 o superior
-- SAP Business One con compatibilidad de add-ons / UI API
+- SAP Business One con soporte de add-ons y UI API
 
-## Estructura del proyecto
+## 🗂️ Estructura del repositorio
 
 ```text
 MiprimerAddon/
@@ -56,7 +57,7 @@ MiprimerAddon/
 └──
 ```
 
-## Instalación y uso
+## 🛠️ Cómo ejecutarlo
 
 1. Clona este repositorio.
 2. Abre la solución `MiprimerAddon.slnx` en Visual Studio.
@@ -64,29 +65,33 @@ MiprimerAddon/
 4. Registra el add-on según la configuración de tu entorno SAP Business One.
 5. Desde el menú de SAP, accede a `Mi Primer Addon` y abre el formulario.
 
-## Ejemplo de flujo
+## 📌 Flujo de uso
 
-1. El add-on registra un menú dentro de SAP Business One.
-2. El usuario selecciona la opción "Abrir formulario".
-3. Se abre una pantalla con una fecha y los campos de resultado.
-4. Al presionar "Consultar", se ejecuta la lógica de consulta y se muestran los valores correspondientes.
+1. El add-on agrega un menú en SAP Business One.
+2. El usuario accede a la opción `Abrir formulario`.
+3. Se muestra una pantalla con una fecha y los campos de resultados.
+4. Al pulsar `Consultar`, se procesa la información y se visualizan los valores asociados.
 
-## Estado del proyecto
+## 📈 Estado del proyecto
 
-Este proyecto está en desarrollo activo y preparado para ampliar funcionalidad en futuras versiones.
+Proyecto en desarrollo con una base funcional para consultas de tipo de cambio y preparado para futuras ampliaciones.
 
-## Roadmap sugerido
+## 🧭 Roadmap sugerido
 
-- Mejorar validaciones de entrada
-- Añadir soporte para más monedas
-- Mejorar la presentación del formulario
-- Añadir manejo de errores más robusto
-- Preparar el repositorio para despliegue o versión estable
+- Mejorar validaciones y manejo de errores
+- Añadir más monedas o indicadores
+- Mejorar la interfaz del formulario
+- Modularizar la lógica de negocio
+- Preparar la versión para despliegue o entrega interna
 
-## Licencia
+## 📄 Licencia
 
-Este proyecto se distribuye bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+Este proyecto está licenciado bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
 
-## Autor
+## 👤 Autor
 
-Proyecto personal desarrollado para aprender y experimentar con add-ons para SAP Business One.
+Proyecto personal para explorar el desarrollo de add-ons en SAP Business One con C# y .NET Framework.
+
+## 🔗 Repositorio
+
+- GitHub: https://github.com/waifu3/MiPrimerAdd-on
