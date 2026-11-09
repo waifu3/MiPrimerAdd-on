@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using SAPbouiCOM;
 
@@ -8,6 +9,15 @@ namespace MiprimerAddon
     {
         public static SAPbouiCOM.Application SBO_Application;
         private bool logHabilitado = false;
+
+        // Tipo de formulario de SAP -> tabla de cabecera del documento
+        private static readonly Dictionary<string, string> DocTablas =
+            new Dictionary<string, string>
+            {
+                { "133", "OINV" },   // Factura de ventas
+                { "139", "ORDR" },   // Pedido de venta
+                { "141", "OPCH" }    // Factura de compra
+            };
 
         public Addon()
         {
@@ -170,7 +180,7 @@ namespace MiprimerAddon
             form.Title = "Log de consultas de tipo de cambio";
             form.Left = 300;
             form.Top = 80;
-            form.Width = 560;
+            form.Width = 640;
             form.Height = 330;
 
             form.DataSources.DataTables.Add("dtLog");
@@ -180,7 +190,7 @@ namespace MiprimerAddon
             ((SAPbouiCOM.Button)btn.Specific).Caption = "Actualizar";
 
             Item grd = form.Items.Add("grdLog", BoFormItemTypes.it_GRID);
-            grd.Left = 10; grd.Top = 40; grd.Width = 530; grd.Height = 240;
+            grd.Left = 10; grd.Top = 40; grd.Width = 610; grd.Height = 240;
             ((SAPbouiCOM.Grid)grd.Specific).DataTable = form.DataSources.DataTables.Item("dtLog");
 
             CargarLog(form);
@@ -199,6 +209,7 @@ namespace MiprimerAddon
                     "\"U_Fecha\" AS \"Fecha consultada\", " +
                     "\"U_Moneda\" AS \"Moneda\", " +
                     "\"U_Tasa\" AS \"Tipo de cambio\", " +
+                    "\"U_FechaTC\" AS \"Vigencia del valor\", " +
                     "\"U_Usuario\" AS \"Usuario\" " +
                     "FROM \"@MPA_LOG\" ORDER BY \"Code\" DESC");
 
@@ -244,8 +255,8 @@ namespace MiprimerAddon
                 return;
             }
 
-            // 2) Al abrirse una Factura de ventas (tipo "133"), agregarle el botón
-            if (pVal.FormTypeEx == "133"
+            // 2) Al abrirse un documento de la lista, agregarle el botón
+            if (DocTablas.ContainsKey(pVal.FormTypeEx)
                 && pVal.EventType == BoEventTypes.et_FORM_LOAD
                 && !pVal.BeforeAction)
             {
@@ -253,13 +264,13 @@ namespace MiprimerAddon
                 return;
             }
 
-            // 3) Clic en el botón agregado a la factura
-            if (pVal.FormTypeEx == "133"
+            // 3) Clic en el botón agregado al documento
+            if (DocTablas.ContainsKey(pVal.FormTypeEx)
                 && pVal.ItemUID == "btnMPA"
                 && pVal.EventType == BoEventTypes.et_ITEM_PRESSED
                 && !pVal.BeforeAction)
             {
-                MostrarDolarDocumento(FormUID);
+                MostrarDolarDocumento(FormUID, DocTablas[pVal.FormTypeEx]);
             }
         }
 
@@ -291,9 +302,13 @@ namespace MiprimerAddon
                 form.DataSources.UserDataSources.Item("dsEur").ValueEx = ObtenerTipoCambio(rs, "EUR", fecha);
                 form.DataSources.UserDataSources.Item("dsUf").ValueEx = ObtenerTipoCambio(rs, "UF", fecha);
 
-                // Registrar la consulta en la tabla de log (solo si está habilitada)
+                // Registrar la consulta en el log, con la fecha de vigencia de cada tasa
                 foreach (string m in new[] { "US$", "EUR", "UF" })
-                    RegistrarConsulta(oCompany, rs, m, fecha, ObtenerTasa(rs, m, fecha));
+                {
+                    DateTime vigencia;
+                    double tasa = ObtenerTasaFecha(rs, m, fecha, out vigencia);
+                    RegistrarConsulta(oCompany, rs, m, fecha, tasa, vigencia);
+                }
 
                 // Si el formulario de log está abierto, refrescarlo
                 foreach (SAPbouiCOM.Form f in SBO_Application.Forms)
@@ -316,31 +331,41 @@ namespace MiprimerAddon
 
         private string ObtenerTipoCambio(SAPbobsCOM.Recordset rs, string moneda, string fecha)
         {
+            DateTime vigencia;
+            double valor = ObtenerTasaFecha(rs, moneda, fecha, out vigencia);
+
+            if (valor <= 0)
+                return "Sin datos";
+
+            return valor.ToString("N2", new CultureInfo("es-CL"))
+                 + "  (" + vigencia.ToString("dd-MM-yyyy") + ")";
+        }
+
+        // Devuelve la tasa vigente a la fecha pedida y, en 'vigencia', la fecha real de esa tasa
+        private double ObtenerTasaFecha(SAPbobsCOM.Recordset rs, string moneda, string fecha,
+            out DateTime vigencia)
+        {
+            vigencia = DateTime.MinValue;
+
             rs.DoQuery("SELECT TOP 1 \"RateDate\", \"Rate\" FROM \"ORTT\" " +
                        "WHERE \"Currency\" = '" + moneda + "' AND \"RateDate\" <= '" + fecha + "' " +
                        "ORDER BY \"RateDate\" DESC");
 
             if (rs.EoF)
-                return "Sin datos";
+                return 0;
 
-            double valor = Convert.ToDouble(rs.Fields.Item("Rate").Value);
-            DateTime fechaTc = (DateTime)rs.Fields.Item("RateDate").Value;
-
-            return valor.ToString("N2", new CultureInfo("es-CL"))
-                 + "  (" + fechaTc.ToString("dd-MM-yyyy") + ")";
+            vigencia = (DateTime)rs.Fields.Item("RateDate").Value;
+            return Convert.ToDouble(rs.Fields.Item("Rate").Value);
         }
 
         private double ObtenerTasa(SAPbobsCOM.Recordset rs, string moneda, string fecha)
         {
-            rs.DoQuery("SELECT TOP 1 \"Rate\" FROM \"ORTT\" " +
-                       "WHERE \"Currency\" = '" + moneda + "' AND \"RateDate\" <= '" + fecha + "' " +
-                       "ORDER BY \"RateDate\" DESC");
-
-            return rs.EoF ? 0 : Convert.ToDouble(rs.Fields.Item("Rate").Value);
+            DateTime vigencia;
+            return ObtenerTasaFecha(rs, moneda, fecha, out vigencia);
         }
 
         // ---------------------------------------------------------------
-        // BOTÓN EN LA FACTURA DE VENTAS
+        // BOTÓN EN LOS DOCUMENTOS DE SAP
         // ---------------------------------------------------------------
         private void AgregarBotonFactura(string formUID)
         {
@@ -364,14 +389,14 @@ namespace MiprimerAddon
             }
         }
 
-        private void MostrarDolarDocumento(string formUID)
+        private void MostrarDolarDocumento(string formUID, string tabla)
         {
             SAPbobsCOM.Recordset rs = null;
             try
             {
                 SAPbouiCOM.Form form = SBO_Application.Forms.Item(formUID);
 
-                SAPbouiCOM.DBDataSource ds = form.DataSources.DBDataSources.Item("OINV");
+                SAPbouiCOM.DBDataSource ds = form.DataSources.DBDataSources.Item(tabla);
                 string cliente = ds.GetValue("CardName", 0).Trim();
                 string fecha = ds.GetValue("DocDate", 0).Trim();
                 string moneda = ds.GetValue("DocCur", 0).Trim();
@@ -397,7 +422,7 @@ namespace MiprimerAddon
                 double tasa = ObtenerTasa(rs, "US$", fecha);
 
                 CultureInfo cl = new CultureInfo("es-CL");
-                string msg = "Cliente: " + cliente
+                string msg = (tabla == "OPCH" ? "Proveedor: " : "Cliente: ") + cliente
                            + "\nFecha del documento: " + dt.ToString("dd-MM-yyyy")
                            + "\nTotal: " + total.ToString("N2", cl) + " " + moneda;
 
@@ -464,7 +489,7 @@ namespace MiprimerAddon
                     }
                 }
 
-                // 2) Campos
+                // 2) Campos (cada uno se crea solo si todavía no existe)
                 paso = "campo U_Fecha";
                 CrearCampo(oCompany, "Fecha", "Fecha consultada",
                     SAPbobsCOM.BoFieldTypes.db_Date, 0, SAPbobsCOM.BoFldSubTypes.st_None);
@@ -480,6 +505,11 @@ namespace MiprimerAddon
                 paso = "campo U_Usuario";
                 CrearCampo(oCompany, "Usuario", "Usuario que consulta",
                     SAPbobsCOM.BoFieldTypes.db_Alpha, 30, SAPbobsCOM.BoFldSubTypes.st_None);
+
+                // Campo nuevo: fecha de vigencia de la tasa
+                paso = "campo U_FechaTC";
+                CrearCampo(oCompany, "FechaTC", "Vigencia del valor",
+                    SAPbobsCOM.BoFieldTypes.db_Date, 0, SAPbobsCOM.BoFldSubTypes.st_None);
 
                 logHabilitado = true;
                 SBO_Application.SetStatusBarMessage("Log de consultas habilitado",
@@ -553,7 +583,7 @@ namespace MiprimerAddon
         }
 
         private void RegistrarConsulta(SAPbobsCOM.Company oCompany, SAPbobsCOM.Recordset rs,
-            string moneda, string fecha, double tasa)
+            string moneda, string fecha, double tasa, DateTime vigencia)
         {
             if (!logHabilitado || tasa <= 0) return;
 
@@ -571,6 +601,7 @@ namespace MiprimerAddon
                     DateTime.ParseExact(fecha, "yyyyMMdd", CultureInfo.InvariantCulture);
                 ut.UserFields.Fields.Item("U_Moneda").Value = moneda;
                 ut.UserFields.Fields.Item("U_Tasa").Value = tasa;
+                ut.UserFields.Fields.Item("U_FechaTC").Value = vigencia;
                 ut.UserFields.Fields.Item("U_Usuario").Value = oCompany.UserName;
 
                 if (ut.Add() != 0)
