@@ -139,11 +139,15 @@ Este proyecto se encuentra en desarrollo activo y cuenta con una base funcional 
 - [ ] Preparar una versión estable para pruebas internas
 - [ ] Añadir autenticación o seguridad si el proyecto evoluciona
 
-## Capturas
+## Product Preview
+
+Vista previa del panel principal y del formulario de consulta del add-on dentro del entorno SAP Business One.
 
 <div align="center">
-  <img src="assets/form-preview.svg" alt="Vista previa del formulario" width="80%" />
+  <img src="assets/form-preview.svg" alt="Vista previa del formulario SAP Business One" width="80%" />
 </div>
+
+La captura representa la experiencia principal del usuario: un panel visual, una consulta rápida por fecha y una salida clara con los valores del dólar, euro y UF.
 
 ## Licencia
 
