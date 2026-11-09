@@ -3,6 +3,7 @@
 <div align="center">
 
 ![Status](https://img.shields.io/badge/status-active-success)
+![Build](https://img.shields.io/badge/build-ongoing-orange)
 ![.NET Framework 4.8](https://img.shields.io/badge/.NET-Framework%204.8-512BD4?logo=dotnet)
 ![SAP Business One](https://img.shields.io/badge/SAP-Business%20One-0D6EFD)
 ![C#](https://img.shields.io/badge/C%23-Development-239120?logo=csharp&logoColor=white)
@@ -10,42 +11,63 @@
 
 </div>
 
-Add-on personalizado para SAP Business One, desarrollado con C# y .NET Framework 4.8, pensado para integrar un menú con una pantalla de consulta de tipos de cambio.
+Add-on personalizado para SAP Business One, desarrollado con C# y .NET Framework 4.8, orientado a la integración con la UI API y a la consulta de tipos de cambio.
+
+## Tabla de contenidos
+
+- [Overview](#overview)
+- [Features](#features)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Requisitos](#requisitos)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Instalación](#instalación)
+- [Guía de uso](#guía-de-uso)
+- [Flujo de trabajo](#flujo-de-trabajo)
+- [Estado del proyecto](#estado-del-proyecto)
+- [Roadmap](#roadmap)
+- [Capturas](#capturas)
+- [Licencia](#licencia)
+- [Autor](#autor)
 
 ## Overview
 
-Este proyecto permite crear un menú dentro de SAP Business One y abrir un formulario que consulta valores de cambio de:
+Este proyecto crea un menú dentro de SAP Business One y abre un formulario para consultar valores de cambio de:
 
 - Dólar (USD)
 - Euro (EUR)
 - UF (Unidad de Fomento)
 
-La solución está construida sobre la UI API de SAP y está preparada para evolucionar con nuevas funcionalidades.
+Se trata de una base funcional para add-ons de SAP B1, con una estructura clara y preparada para crecer con nuevas pantallas, validaciones y servicios.
 
 ## Features
 
-- Menú personalizado en SAP Business One
-- Formulario de consulta con validación de fecha
-- Integración con `SAPbouiCOM` y `SAPbobsCOM`
-- Visualización de resultados por moneda
-- Base extensible para futuras pantallas y lógicas
-- Compatible con .NET Framework 4.8
+| Característica | Descripción |
+| --- | --- |
+| Menú personalizado | Añade un acceso directo dentro del entorno de SAP Business One |
+| Formulario de consulta | Permite introducir una fecha y ver los valores asociados |
+| Integración SAP UI API | Usa `SAPbouiCOM` para interactuar con la interfaz |
+| Integración SAP DI API | Usa `SAPbobsCOM` para consultar o trabajar con datos empresariales |
+| Validación de entrada | Comprueba fechas y evita errores básicos de uso |
+| Arquitectura extensible | Sirve como base para futuras pantallas y lógicas |
+| Compatibilidad .NET Framework | Diseñado para .NET Framework 4.8 |
 
-## Tech Stack
+## Stack Tecnológico
 
 - C#
 - .NET Framework 4.8
-- SAP Business One UI API
-- Visual Studio
+- SAP Business One UI API (`SAPbouiCOM`)
+- SAP Business One DI API (`SAPbobsCOM`)
+- Visual Studio 2022+
 
-## Requirements
+## Requisitos
 
 - Windows
 - .NET Framework 4.8
 - Visual Studio 2022 o superior
-- SAP Business One con soporte de add-ons / UI API
+- SAP Business One con soporte de add-ons y UI API
+- Permisos y configuración del entorno SAP adecuados
 
-## Project Structure
+## Estructura del proyecto
 
 ```text
 MiprimerAddon/
@@ -65,45 +87,71 @@ MiprimerAddon/
 └──
 ```
 
-## Getting Started
+## Instalación
 
-1. Clona el repositorio.
+1. Clona este repositorio.
 2. Abre la solución `MiprimerAddon.slnx` en Visual Studio.
 3. Compila el proyecto en `Debug` o `Release`.
 4. Registra el add-on según la configuración de tu entorno SAP Business One.
-5. Desde el menú de SAP, selecciona `Mi Primer Addon` y abre el formulario.
+5. Ajusta la conexión SAP en la lógica de inicio si corresponde a tu entorno.
 
-## Usage Flow
+## Guía de uso
 
-1. El add-on registra un menú en SAP Business One.
-2. El usuario accede a la opción `Abrir formulario`.
-3. La pantalla solicita una fecha y presenta los valores consultados.
-4. Al pulsar `Consultar`, se procesan los datos y se muestran los resultados.
+1. Ejecuta el add-on desde el entorno de SAP Business One.
+2. Accede al menú `Mi Primer Addon`.
+3. Abre la opción `Abrir formulario`.
+4. Introduce la fecha deseada.
+5. Pulsa `Consultar` para ver los resultados.
 
-## Project Status
+## Flujo de trabajo
 
-Este proyecto se encuentra en desarrollo activo y cuenta con una base funcional lista para ser ampliada.
+```text
+Inicio del add-on
+   ↓
+Registro de menú en SAP Business One
+   ↓
+Apertura de formulario
+   ↓
+Entrada de fecha
+   ↓
+Consulta de valores
+   ↓
+Visualización de resultados
+```
+
+## Estado del proyecto
+
+Este proyecto se encuentra en desarrollo activo y cuenta con una base funcional para consultas de tipo de cambio y extensiones futuras.
 
 ## Roadmap
 
-- Mejorar validaciones y manejo de errores
-- Añadir soporte para más monedas o indicadores
-- Mejorar la experiencia visual del formulario
-- Modularizar la lógica para mantener el código más limpio
-- Preparar una versión estable para entrega o pruebas internas
+- [ ] Mejorar validaciones y manejo de errores
+- [ ] Añadir más monedas o indicadores
+- [ ] Mejorar la presentación visual del formulario
+- [ ] Modularizar la lógica de negocio
+- [ ] Preparar una versión estable para pruebas internas
+- [ ] Añadir autenticación o seguridad si el proyecto evoluciona
 
-## License
+## Capturas
 
-Este proyecto se distribuye bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+> Aquí puedes añadir una captura del menú o del formulario para mejorar la presentación del repositorio.
 
-## Author
+```text
+[Imagen del formulario SAP Business One]
+```
 
-Proyecto personal para aprender y experimentar con add-ons para SAP Business One usando C# y .NET Framework.
+## Licencia
 
-## Repository
+Este proyecto está licenciado bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+## Autor
+
+Proyecto personal para explorar el desarrollo de add-ons para SAP Business One utilizando C# y .NET Framework.
+
+## Repositorio
 
 - GitHub: https://github.com/waifu3/MiPrimerAdd-on
 
-## Screenshot
+## Contribuciones
 
-> Aquí puedes agregar una captura del formulario o del menú del add-on para mejorar la presentación del repositorio.
+Las contribuciones son bienvenidas. Si quieres mejorar el proyecto, abre un pull request o comparte una idea de funcionalidad.
