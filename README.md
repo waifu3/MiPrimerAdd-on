@@ -49,11 +49,25 @@ Se trata de una base funcional para add-ons de SAP B1, con una estructura clara 
 | --- | --- |
 | Menú personalizado | Añade un acceso directo dentro del entorno de SAP Business One |
 | Formulario de consulta | Permite introducir una fecha y ver los valores asociados |
+| Registro de consultas | Guarda en una tabla propia cada búsqueda con fecha, moneda, tasa y usuario |
+| Log de auditoría | Permite consultar el historial de búsquedas desde una grilla dentro del add-on |
+| Consulta rápida del documento | Añade el botón `Dólar del doc.` en la factura de ventas para revisar el valor vigente |
 | Integración SAP UI API | Usa `SAPbouiCOM` para interactuar con la interfaz |
 | Integración SAP DI API | Usa `SAPbobsCOM` para consultar o trabajar con datos empresariales |
 | Validación de entrada | Comprueba fechas y evita errores básicos de uso |
 | Arquitectura extensible | Sirve como base para futuras pantallas y lógicas |
 | Compatibilidad .NET Framework | Diseñado para .NET Framework 4.8 |
+
+## Nuevas funciones incluidas
+
+El add-on ya incorpora funcionalidad adicional más allá del formulario inicial:
+
+- Menú principal con dos accesos: `Abrir formulario` y `Ver log de consultas`
+- Creación automática de la tabla personalizada `@MPA_LOG` para registrar auditoría
+- Consulta del historial de tasas por moneda, fecha y usuario
+- Botón `Dólar del doc.` disponible en la factura de ventas para ver el valor de referencia del documento
+- Refresco dinámico del log cuando se ejecutan nuevas consultas
+- Validación y manejo de errores para evitar fallos en la UI de SAP Business One
 
 ## Stack Tecnológico
 
@@ -106,9 +120,28 @@ MiprimerAddon/
 
 1. Ejecuta el add-on desde el entorno de SAP Business One.
 2. Accede al menú `Mi Primer Addon`.
-3. Abre la opción `Abrir formulario`.
-4. Introduce la fecha deseada.
-5. Pulsa `Consultar` para ver los resultados.
+3. Utiliza `Abrir formulario` para consultar tipos de cambio por fecha.
+4. Introduce la fecha deseada y pulsa `Consultar` para ver los resultados.
+5. Usa `Ver log de consultas` para revisar el historial registrado por el add-on.
+6. En la factura de ventas podrás ver el botón `Dólar del doc.` para obtener el valor del dólar aplicado al documento.
+
+## Flujo de uso real del add-on
+
+```text
+Inicio del add-on
+   ↓
+Creación del menú principal
+   ↓
+Validación de la tabla de log
+   ↓
+Consulta de tasas por moneda y fecha
+   ↓
+Registro en @MPA_LOG
+   ↓
+Visualización del historial desde la grilla
+   ↓
+Consulta del valor dólar del documento desde la factura
+```
 
 ## Flujo de trabajo
 
